@@ -16,7 +16,7 @@ export interface InvoiceTotals {
 
 const fmtAmt = (n: number) => {
   const safe = Number(n) || 0;
-  return "\u20B9" + safe.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return "Rs." + safe.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 
 type RGB = [number, number, number];

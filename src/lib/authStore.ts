@@ -44,8 +44,6 @@ export async function signUp(email: string, password: string, name: string) {
     email: data.user.email,
     avatar_url: data.user.avatar_url || "",
   });
-  // Start free trial on signup
-  import("@/lib/planStore").then(({ initTrial }) => initTrial());
   return data;
 }
 
