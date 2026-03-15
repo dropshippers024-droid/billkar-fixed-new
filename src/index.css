@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Safe area for notched devices */
+:root {
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@layer base {
+  :root {
+    --background: 40 20% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 239 84% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 160 84% 39%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 239 84% 67%;
+    --radius: 0.75rem;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 239 84% 67%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 239 84% 67%;
+    --primary-50: 239 100% 97%;
+    --success: 160 84% 39%;
+    --success-foreground: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html, body {
+    @apply overflow-x-hidden;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer utilities {
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-indigo-500 to-emerald-500 bg-clip-text text-transparent;
+  }
+  .glass-card {
+    @apply bg-card rounded-2xl border border-border shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-300;
+  }
+  .btn-accent {
+    @apply bg-accent text-accent-foreground rounded-xl shadow-lg hover:shadow-accent/25 transition-all duration-300;
+  }
+  .btn-ghost-outline {
+    @apply border border-border text-foreground rounded-xl hover:bg-secondary transition-all duration-300;
+  }
+  .glow-accent {
+    box-shadow: 0 0 30px hsl(160 84% 39% / 0.2);
+  }
+  .glow-primary {
+    box-shadow: 0 0 30px hsl(239 84% 67% / 0.15);
+  }
+  .shimmer {
+    background: linear-gradient(90deg, transparent 0%, hsl(217 91% 60% / 0.08) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  .bg-primary-50 {
+    background-color: hsl(214 100% 97%);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(160 84% 39% / 0.2); }
+  50% { box-shadow: 0 0 35px hsl(160 84% 39% / 0.4); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -30px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 10s ease-in-out infinite 2s;
+}
