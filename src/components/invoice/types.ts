@@ -42,6 +42,7 @@ export interface InvoiceData {
   upiId?: string;
   originalInvoiceNumber?: string;
   creditReason?: string;
+  invoiceFor?: string;
   vehicleNumber?: string;
   transportDetails?: string;
 }

@@ -72,6 +72,7 @@ const InvoiceCreator = () => {
   const [customer, setCustomer] = useState<CustomerInfo>(emptyCustomer());
   const [items, setItems] = useState<InvoiceItem[]>([emptyItem()]);
   const [notes, setNotes] = useState("");
+  const [invoiceFor, setInvoiceFor] = useState("");
   const [terms, setTerms] = useState("1. Payment due within 30 days.\n2. Goods once sold will not be taken back.\n3. Subject to local jurisdiction.");
 
   // Type-specific fields
@@ -90,7 +91,7 @@ const InvoiceCreator = () => {
   const [recurAutoSend, setRecurAutoSend] = useState(false);
 
   const invoiceData: InvoiceData = useMemo(() => ({
-    template, invoiceNumber, date, dueDate, type, customer, items, notes, terms,
+    template, invoiceNumber, date, dueDate, type, customer, items, notes, terms, invoiceFor,
     businessName: profile.name || "Your Business",
     businessGstin: profile.gstin || "",
     businessState,
@@ -105,7 +106,7 @@ const InvoiceCreator = () => {
     creditReason,
     vehicleNumber,
     transportDetails,
-  }), [template, invoiceNumber, date, dueDate, type, customer, items, notes, terms, businessState, profile, originalInvoiceNumber, creditReason, vehicleNumber, transportDetails]);
+  }), [template, invoiceNumber, date, dueDate, type, customer, items, notes, terms, invoiceFor, businessState, profile, originalInvoiceNumber, creditReason, vehicleNumber, transportDetails]);
 
   const [previewData, setPreviewData] = useState(invoiceData);
   useEffect(() => {
@@ -594,7 +595,7 @@ const InvoiceCreator = () => {
               <BillToSection customer={customer} onChange={setCustomer} />
               <ItemsSection items={items} onChange={setItems} />
               <SummarySection items={items} businessState={businessState} customerState={customer.state} />
-              <AdditionalSection notes={notes} terms={terms} onNotesChange={setNotes} onTermsChange={setTerms} />
+              <AdditionalSection notes={notes} terms={terms} invoiceFor={invoiceFor} onNotesChange={setNotes} onTermsChange={setTerms} onInvoiceForChange={setInvoiceFor} />
 
               {/* Recurring invoice card */}
               <div className="bg-card rounded-2xl border border-border shadow-sm p-4">
