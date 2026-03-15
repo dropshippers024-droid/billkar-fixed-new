@@ -1,3 +1,4 @@
+import { getCurrentPlan, isTrialActive, isPro } from "@/lib/planStore";
 import { cn } from "@/lib/utils";
 import { TEMPLATES } from "./types";
 import { getCurrentPlan, getTemplateAccess } from "@/lib/planStore";

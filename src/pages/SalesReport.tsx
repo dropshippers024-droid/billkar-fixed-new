@@ -1,3 +1,4 @@
+import { getCurrentPlan, isTrialActive, isPro } from "@/lib/planStore";
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { IndianRupee, TrendingUp, Receipt, Wallet, FileDown, FileSpreadsheet, Lock } from "lucide-react";

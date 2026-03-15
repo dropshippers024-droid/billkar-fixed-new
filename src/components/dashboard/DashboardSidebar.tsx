@@ -1,3 +1,4 @@
+import { getCurrentPlan, isTrialActive, isPro } from "@/lib/planStore";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,

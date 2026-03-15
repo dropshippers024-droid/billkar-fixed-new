@@ -1,3 +1,4 @@
+import { getCurrentPlan, isTrialActive, isPro } from "@/lib/planStore";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Search, X, Package, Upload, Pencil } from "lucide-react";

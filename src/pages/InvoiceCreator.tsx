@@ -1,3 +1,4 @@
+import { getCurrentPlan, isTrialActive, isPro } from "@/lib/planStore";
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Eye, ChevronDown, Save, Mail, MessageCircle, FileDown, Link2, Check, MapPin, AlertTriangle, RefreshCw } from "lucide-react";

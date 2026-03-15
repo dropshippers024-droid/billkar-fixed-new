@@ -1,3 +1,4 @@
+import { getCurrentPlan, isTrialActive, isPro } from "@/lib/planStore";
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
