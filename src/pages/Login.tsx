@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Loader2, Lock, TrendingUp } from "lucide-react";
@@ -23,6 +23,10 @@ const getErrorMessage = (error: unknown, fallback: string): string =>
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    fetch("https://billkar-api.dropshippers024.workers.dev/api/health", { method: "GET" }).catch(() => {});
+  }, []);
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [forgotOpen, setForgotOpen] = useState(false);
