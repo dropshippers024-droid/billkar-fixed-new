@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -11,7 +11,7 @@
 
 @layer base {
   :root {
-    --background: 40 20% 98%;
+    --background: 220 20% 97%;
     --foreground: 222 47% 11%;
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
@@ -19,25 +19,25 @@
     --popover-foreground: 222 47% 11%;
     --primary: 239 84% 67%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
+    --secondary: 220 20% 94%;
     --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 220 20% 94%;
+    --muted-foreground: 215 16% 50%;
     --accent: 160 84% 39%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
+    --border: 220 20% 90%;
+    --input: 220 20% 90%;
     --ring: 239 84% 67%;
     --radius: 0.75rem;
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 222 47% 11%;
     --sidebar-primary: 239 84% 67%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent: 220 20% 94%;
     --sidebar-accent-foreground: 222 47% 11%;
-    --sidebar-border: 214 32% 91%;
+    --sidebar-border: 220 20% 90%;
     --sidebar-ring: 239 84% 67%;
     --primary-50: 239 100% 97%;
     --success: 160 84% 39%;
@@ -51,65 +51,166 @@
   }
   html, body {
     @apply overflow-x-hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 }
 
 @layer utilities {
+  /* Gradient text */
   .text-gradient-primary {
     @apply bg-gradient-to-r from-indigo-500 to-emerald-500 bg-clip-text text-transparent;
   }
+
+  /* Premium card */
   .glass-card {
-    @apply bg-card rounded-2xl border border-border shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-300;
+    background: white;
+    border-radius: 20px;
+    border: 1px solid hsl(220 20% 90%);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    transition: all 0.25s ease;
   }
+  .glass-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10);
+  }
+
+  /* Buttons */
   .btn-accent {
-    @apply bg-accent text-accent-foreground rounded-xl shadow-lg hover:shadow-accent/25 transition-all duration-300;
+    @apply bg-accent text-accent-foreground rounded-xl transition-all duration-200;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
   }
+  .btn-accent:hover {
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground rounded-xl transition-all duration-200;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    transform: translateY(-1px);
+  }
+
   .btn-ghost-outline {
-    @apply border border-border text-foreground rounded-xl hover:bg-secondary transition-all duration-300;
+    @apply border border-border text-foreground rounded-xl hover:bg-secondary transition-all duration-200;
   }
+
+  /* Glows */
   .glow-accent {
     box-shadow: 0 0 30px hsl(160 84% 39% / 0.2);
   }
   .glow-primary {
     box-shadow: 0 0 30px hsl(239 84% 67% / 0.15);
   }
+
+  /* Shimmer loading */
   .shimmer {
-    background: linear-gradient(90deg, transparent 0%, hsl(217 91% 60% / 0.08) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, hsl(217 91% 60% / 0.06) 50%, transparent 100%);
     background-size: 200% 100%;
-    animation: shimmer 2s infinite;
+    animation: shimmer 1.8s infinite;
   }
+
   .bg-primary-50 {
     background-color: hsl(214 100% 97%);
   }
+
+  /* Card shadow levels */
+  .shadow-card {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+  .shadow-card-hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10);
+  }
+  .shadow-card-lg {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Smooth page transitions */
+  .page-enter {
+    animation: pageEnter 0.25s ease forwards;
+  }
 }
 
+/* Animations */
 @keyframes shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
 
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes pulse-glow {
   0%, 100% { box-shadow: 0 0 20px hsl(160 84% 39% / 0.2); }
-  50% { box-shadow: 0 0 35px hsl(160 84% 39% / 0.4); }
+  50%       { box-shadow: 0 0 35px hsl(160 84% 39% / 0.4); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-4px); }
 }
 
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
-@keyframes float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -30px) scale(1.05); }
-  66% { transform: translate(-20px, 20px) scale(0.95); }
-}
-
 .animate-float {
-  animation: float 8s ease-in-out infinite;
+  animation: float 3s ease-in-out infinite;
 }
 
-.animate-float-delayed {
-  animation: float 10s ease-in-out infinite 2s;
+/* Button press effect */
+button:active, a:active {
+  transform: scale(0.97);
 }
+
+/* Table improvements */
+table th {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: hsl(215 16% 50%);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(220 20% 85%);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(220 20% 75%);
+}
+
+/* Input focus */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px hsl(239 84% 67% / 0.12);
+}
+
+/* Status badges */
+.badge-paid    { @apply bg-emerald-50 text-emerald-700 border border-emerald-100; }
+.badge-pending { @apply bg-blue-50 text-blue-700 border border-blue-100; }
+.badge-overdue { @apply bg-red-50 text-red-700 border border-red-100; }
+.badge-draft   { @apply bg-gray-50 text-gray-600 border border-gray-200; }
+.badge-partial { @apply bg-amber-50 text-amber-700 border border-amber-100; }
