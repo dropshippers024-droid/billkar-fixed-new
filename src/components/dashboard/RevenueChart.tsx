@@ -15,20 +15,15 @@ const periods = [
 
 async function fetchRevenueData(days: number): Promise<ChartPoint[]> {
   const since = subDays(new Date(), days).toISOString().split("T")[0];
-
   const { invoices: allInvoices } = await api.getInvoices();
   const invoices = allInvoices.filter(
     (inv) => inv.invoice_date >= since && inv.status !== "cancelled"
   );
-
   if (invoices.length === 0) return [];
 
   if (days === 7) {
     const map = new Map<string, number>();
-    for (let i = 6; i >= 0; i--) {
-      const d = format(subDays(new Date(), i), "EEE");
-      map.set(d, 0);
-    }
+    for (let i = 6; i >= 0; i--) { map.set(format(subDays(new Date(), i), "EEE"), 0); }
     for (const inv of invoices) {
       const d = format(new Date(inv.invoice_date), "EEE");
       if (map.has(d)) map.set(d, (map.get(d) || 0) + (Number(inv.total_amount) || 0));
@@ -77,18 +72,24 @@ const RevenueChart = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4 }}
-      className="bg-background rounded-2xl border border-border shadow-sm p-5"
+      className="border border-border p-5"
+      style={{ background: "white", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", borderRadius: "16px" }}
     >
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-bold">Revenue</h3>
-        <div className="flex gap-1 bg-secondary rounded-lg p-0.5">
+      <div className="flex items-center justify-between mb-5">
+        <div>
+          <h3 className="font-bold text-base">Revenue</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">Your earnings over time</p>
+        </div>
+        <div className="flex gap-1 bg-gray-100 rounded-xl p-1">
           {periods.map((p, i) => (
             <button
               key={p.label}
               onClick={() => setActive(i)}
               className={cn(
-                "px-3 py-1 rounded-md text-xs font-medium transition-colors",
-                active === i ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                "px-3 py-1.5 rounded-lg text-xs font-semibold transition-all",
+                active === i
+                  ? "bg-white text-indigo-600 shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
               {p.label}
@@ -98,30 +99,33 @@ const RevenueChart = () => {
       </div>
 
       {loading ? (
-        <div className="h-[220px] flex items-center justify-center">
-          <div className="h-32 w-full bg-muted rounded-xl animate-pulse" />
+        <div className="h-[200px] flex items-center justify-center">
+          <div className="h-full w-full bg-muted rounded-xl animate-pulse" />
         </div>
       ) : isEmpty ? (
-        <div className="h-[220px] flex flex-col items-center justify-center text-muted-foreground gap-2">
-          <p className="text-sm">No revenue data yet</p>
-          <p className="text-xs">Create invoices to see your revenue chart</p>
+        <div className="h-[200px] flex flex-col items-center justify-center text-muted-foreground gap-2">
+          <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center mb-2">
+            <span className="text-2xl">📈</span>
+          </div>
+          <p className="text-sm font-medium">No revenue data yet</p>
+          <p className="text-xs">Create invoices to see your chart</p>
         </div>
       ) : (
-        <ResponsiveContainer width="100%" height={220}>
-          <AreaChart data={chartData}>
+        <ResponsiveContainer width="100%" height={200}>
+          <AreaChart data={chartData} margin={{ top: 5, right: 5, bottom: 0, left: 0 }}>
             <defs>
               <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="hsl(213, 56%, 24%)" stopOpacity={0.15} />
-                <stop offset="100%" stopColor="hsl(213, 56%, 24%)" stopOpacity={0} />
+                <stop offset="0%" stopColor="#6366f1" stopOpacity={0.2} />
+                <stop offset="100%" stopColor="#6366f1" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "#64748B" }} />
-            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "#64748B" }} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} />
+            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "#94a3b8" }} />
+            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "#94a3b8" }} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} width={40} />
             <Tooltip
-              contentStyle={{ borderRadius: 12, border: "1px solid hsl(214, 32%, 91%)", fontSize: 12 }}
+              contentStyle={{ borderRadius: 12, border: "1px solid #e2e8f0", fontSize: 12, boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}
               formatter={(v: number) => [`₹${v.toLocaleString("en-IN")}`, "Revenue"]}
             />
-            <Area type="monotone" dataKey="revenue" stroke="hsl(213, 56%, 24%)" strokeWidth={2} fill="url(#revenueGrad)" />
+            <Area type="monotone" dataKey="revenue" stroke="#6366f1" strokeWidth={2.5} fill="url(#revenueGrad)" dot={{ fill: "#6366f1", strokeWidth: 0, r: 3 }} activeDot={{ r: 5, fill: "#6366f1" }} />
           </AreaChart>
         </ResponsiveContainer>
       )}
