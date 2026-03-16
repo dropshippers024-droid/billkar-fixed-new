@@ -181,9 +181,14 @@ const Dashboard = () => {
                   { label: "Estimates", href: "/dashboard/estimates" },
                   { label: "Products", href: "/dashboard/products" },
                   { label: "Customers", href: "/dashboard/customers" },
+                  { label: "Expenses", href: "/dashboard/expenses" },
+                  { label: "Sales Report", href: "/dashboard/reports/sales" },
+                  { label: "GST Report", href: "/dashboard/reports/gst" },
+                  { label: "Reminders", href: "/dashboard/reminders" },
                   { label: "Settings", href: "/dashboard/settings" },
                 ].map((item) => (
-                  <a key={item.label} href={item.href} onClick={() => setMobileDrawer(false)} className="block px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-secondary">
+                  <a key={item.label} href={item.href} onClick={() => setMobileDrawer(false)}
+                    className="block px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-secondary transition-colors">
                     {item.label}
                   </a>
                 ))}

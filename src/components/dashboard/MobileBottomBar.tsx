@@ -18,31 +18,42 @@ const MobileBottomBar = ({ onMenuToggle }: Props) => {
   const location = useLocation();
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border flex items-center justify-around px-2" style={{ height: "calc(64px + var(--safe-area-bottom))", paddingBottom: "var(--safe-area-bottom)" }}>
-      {tabs.map((t, i) => (
-        <Link
-          key={i}
-          to={t.href}
-          className={cn(
-            "flex flex-col items-center justify-center gap-0.5",
-            t.center
-              ? "w-12 h-12 rounded-full bg-accent text-accent-foreground shadow-lg -mt-5"
-              : location.pathname === t.href
-              ? "text-primary"
-              : "text-muted-foreground"
-          )}
+    <div
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border"
+      style={{ height: "calc(64px + var(--safe-area-bottom))", paddingBottom: "var(--safe-area-bottom)" }}
+    >
+      <div className="flex items-center justify-around h-16 px-2 relative">
+        {tabs.map((t, i) =>
+          t.center ? (
+            <Link
+              key={i}
+              to={t.href}
+              className="flex items-center justify-center w-14 h-14 rounded-full bg-accent text-accent-foreground shadow-xl absolute left-1/2 -translate-x-1/2 -top-5 border-4 border-background"
+            >
+              <t.icon size={24} />
+            </Link>
+          ) : (
+            <Link
+              key={i}
+              to={t.href}
+              className={cn(
+                "flex flex-col items-center justify-center gap-0.5 flex-1",
+                location.pathname === t.href ? "text-primary" : "text-muted-foreground"
+              )}
+            >
+              <t.icon size={20} />
+              <span className="text-[10px] font-medium">{t.label}</span>
+            </Link>
+          )
+        )}
+        <button
+          onClick={onMenuToggle}
+          className="flex flex-col items-center justify-center gap-0.5 flex-1 text-muted-foreground"
         >
-          <t.icon size={t.center ? 22 : 20} />
-          {!t.center && <span className="text-[10px] font-medium">{t.label}</span>}
-        </Link>
-      ))}
-      <button
-        onClick={onMenuToggle}
-        className="flex flex-col items-center justify-center gap-0.5 text-muted-foreground"
-      >
-        <Menu size={20} />
-        <span className="text-[10px] font-medium">More</span>
-      </button>
+          <Menu size={20} />
+          <span className="text-[10px] font-medium">More</span>
+        </button>
+      </div>
     </div>
   );
 };

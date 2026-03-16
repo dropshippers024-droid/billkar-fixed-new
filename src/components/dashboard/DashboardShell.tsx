@@ -48,10 +48,10 @@ const DashboardShell = ({ children }: Props) => {
               <nav className="py-4 px-3 space-y-1 overflow-y-auto">
                 {mobileNavItems.map((item) => (
                   <Link key={item.label} to={item.href} onClick={() => setMobileDrawer(false)}
-                    className={`flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                       location.pathname === item.href
                         ? "bg-primary/10 text-primary"
-                        : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                        : "text-muted-foreground hover:bg-secondary"
                     }`}>
                     {item.label}
                   </Link>
