@@ -1,4 +1,4 @@
-import { LayoutDashboard, FileText, Plus, Users, Menu } from "lucide-react";
+import { LayoutDashboard, FileText, Plus, Users, Wallet, Menu } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +11,7 @@ const tabs = [
   { icon: FileText, label: "Invoices", href: "/dashboard/invoices" },
   { icon: Plus, label: "", href: "/dashboard/invoices/new", center: true },
   { icon: Users, label: "Customers", href: "/dashboard/customers" },
+  { icon: Wallet, label: "Expenses", href: "/dashboard/expenses" },
 ];
 
 const MobileBottomBar = ({ onMenuToggle }: Props) => {
@@ -40,7 +41,7 @@ const MobileBottomBar = ({ onMenuToggle }: Props) => {
         className="flex flex-col items-center justify-center gap-0.5 text-muted-foreground"
       >
         <Menu size={20} />
-        <span className="text-[10px] font-medium">Menu</span>
+        <span className="text-[10px] font-medium">More</span>
       </button>
     </div>
   );

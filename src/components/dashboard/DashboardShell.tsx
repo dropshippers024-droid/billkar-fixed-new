@@ -13,7 +13,10 @@ const mobileNavItems = [
   { label: "Estimates", href: "/dashboard/estimates" },
   { label: "Products", href: "/dashboard/products" },
   { label: "Customers", href: "/dashboard/customers" },
+  { label: "Expenses", href: "/dashboard/expenses" },
+  { label: "Sales Report", href: "/dashboard/reports/sales" },
   { label: "GST Report", href: "/dashboard/reports/gst" },
+  { label: "Reminders", href: "/dashboard/reminders" },
   { label: "Settings", href: "/dashboard/settings" },
 ];
 
@@ -42,10 +45,14 @@ const DashboardShell = ({ children }: Props) => {
                 <span className="text-xl font-extrabold">Bill<span className="text-gradient-primary">Kar</span></span>
                 <button onClick={() => setMobileDrawer(false)} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-secondary"><X size={18} /></button>
               </div>
-              <nav className="py-4 px-3 space-y-1">
+              <nav className="py-4 px-3 space-y-1 overflow-y-auto">
                 {mobileNavItems.map((item) => (
                   <Link key={item.label} to={item.href} onClick={() => setMobileDrawer(false)}
-                    className="block px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-secondary transition-colors">
+                    className={`flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                      location.pathname === item.href
+                        ? "bg-primary/10 text-primary"
+                        : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                    }`}>
                     {item.label}
                   </Link>
                 ))}
