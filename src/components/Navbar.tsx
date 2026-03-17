@@ -29,112 +29,114 @@ const Navbar = () => {
   };
 
   const isRoute = (href: string) => href.startsWith("/");
+  const isHero = location.pathname === "/" && !scrolled;
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled || location.pathname !== "/"
-          ? "bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm"
-          : "bg-transparent"
-      }`}
-    >
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      scrolled || location.pathname !== "/"
+        ? "bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm"
+        : "bg-transparent"
+    }`}>
       <div className="max-w-6xl mx-auto flex items-center justify-between h-16 px-4">
-        <Link to="/" className="text-2xl md:text-xl font-extrabold tracking-tight text-gray-900">
-          Bill<span className="text-gradient-primary">Kar</span>
+
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+            style={{ background: "linear-gradient(135deg, #4f46e5, #10b981)" }}>
+            <span className="text-white font-extrabold text-sm">B</span>
+          </div>
+          <span className={`text-xl font-extrabold tracking-tight ${isHero ? "text-white" : "text-gray-900"}`}>
+            Bill<span className={isHero ? "text-yellow-300" : "text-gradient-primary"}>Kar</span>
+          </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8">
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center gap-7">
           {navLinks.map((l) =>
             isRoute(l.href) ? (
-              <Link
-                key={l.label}
-                to={l.href}
-                className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
-              >
+              <Link key={l.label} to={l.href}
+                className={`text-sm font-medium transition-colors ${isHero ? "text-indigo-100 hover:text-white" : "text-gray-500 hover:text-gray-900"}`}>
                 {l.label}
               </Link>
             ) : (
-              <a
-                key={l.label}
-                href={l.href}
-                onClick={(e) => {
-                  if (location.pathname === "/") {
-                    e.preventDefault();
-                    scrollTo(l.href);
-                  }
-                }}
-                className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
-              >
+              <a key={l.label} href={l.href}
+                onClick={(e) => { if (location.pathname === "/") { e.preventDefault(); scrollTo(l.href); } }}
+                className={`text-sm font-medium transition-colors ${isHero ? "text-indigo-100 hover:text-white" : "text-gray-500 hover:text-gray-900"}`}>
                 {l.label}
               </a>
             )
           )}
         </div>
 
+        {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-3">
-          <Link to="/login" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
+          <Link to="/login"
+            className={`text-sm font-medium transition-colors ${isHero ? "text-indigo-100 hover:text-white" : "text-gray-500 hover:text-gray-900"}`}>
             Login
           </Link>
-          <Link
-            to="/signup"
-            className="bg-indigo-600 text-white rounded-lg px-5 py-2 text-sm font-semibold hover:bg-indigo-700 transition-colors"
-          >
+          <Link to="/signup"
+            className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${
+              isHero
+                ? "bg-white text-indigo-600 hover:bg-indigo-50"
+                : "bg-indigo-600 text-white hover:bg-indigo-700"
+            }`}
+            style={{ boxShadow: isHero ? "0 4px 14px rgba(0,0,0,0.15)" : "0 4px 14px rgba(99,102,241,0.3)" }}>
             Start Free →
           </Link>
         </div>
 
-        <button className="md:hidden text-gray-900" onClick={() => setMobileOpen(!mobileOpen)}>
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+        {/* Mobile hamburger */}
+        <button
+          className={`md:hidden w-10 h-10 flex items-center justify-center rounded-xl transition-colors ${
+            isHero ? "text-white hover:bg-white/10" : "text-gray-900 hover:bg-gray-100"
+          }`}
+          onClick={() => setMobileOpen(!mobileOpen)}
+        >
+          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
+      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-b border-gray-100 overflow-hidden"
+            className="md:hidden bg-white border-b border-gray-100 overflow-hidden shadow-lg"
           >
-            <div className="px-4 py-4 flex flex-col gap-4">
+            <div className="px-4 py-5 flex flex-col gap-1">
               {navLinks.map((l) =>
                 isRoute(l.href) ? (
-                  <Link
-                    key={l.label}
-                    to={l.href}
-                    className="text-sm text-gray-600"
-                    onClick={() => setMobileOpen(false)}
-                  >
+                  <Link key={l.label} to={l.href}
+                    className="text-sm font-medium text-gray-700 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors"
+                    onClick={() => setMobileOpen(false)}>
                     {l.label}
                   </Link>
                 ) : (
-                  <a
-                    key={l.label}
-                    href={l.href}
+                  <a key={l.label} href={l.href}
                     onClick={(e) => {
-                      if (location.pathname === "/") {
-                        e.preventDefault();
-                        scrollTo(l.href);
-                      } else {
-                        setMobileOpen(false);
-                      }
+                      if (location.pathname === "/") { e.preventDefault(); scrollTo(l.href); }
+                      else setMobileOpen(false);
                     }}
-                    className="text-sm text-gray-600"
-                  >
+                    className="text-sm font-medium text-gray-700 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors">
                     {l.label}
                   </a>
                 )
               )}
-              <Link to="/login" className="text-sm text-gray-600" onClick={() => setMobileOpen(false)}>
-                Login
-              </Link>
-              <Link
-                to="/signup"
-                className="bg-indigo-600 text-white rounded-lg px-5 py-2 text-sm font-semibold text-center"
-                onClick={() => setMobileOpen(false)}
-              >
-                Start Free →
-              </Link>
+              <div className="border-t border-gray-100 mt-2 pt-3 flex flex-col gap-2">
+                <Link to="/login"
+                  className="text-sm font-medium text-gray-700 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-center transition-colors"
+                  onClick={() => setMobileOpen(false)}>
+                  Login
+                </Link>
+                <Link to="/signup"
+                  className="bg-indigo-600 text-white rounded-xl px-5 py-3 text-sm font-bold text-center hover:bg-indigo-700 transition-colors"
+                  style={{ boxShadow: "0 4px 14px rgba(99,102,241,0.3)" }}
+                  onClick={() => setMobileOpen(false)}>
+                  Start Free →
+                </Link>
+              </div>
             </div>
           </motion.div>
         )}
