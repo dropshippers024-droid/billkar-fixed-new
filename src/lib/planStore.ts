@@ -33,13 +33,10 @@ export function syncPlanFromUser(user: { plan?: string; plan_expires_at?: string
   setCurrentPlan(plan, user.plan_expires_at);
 }
 
-/** Fetch latest plan from server and update localStorage. Call on dashboard mount. */
 export async function refreshPlan(): Promise<PlanType> {
   try {
-    // Dynamic import to avoid circular dependency
     const { api } = await import("@/lib/api");
     await api.getMe();
-    // api.getMe() already calls syncPlanFromUser internally
     return getCurrentPlan();
   } catch {
     return getCurrentPlan();
@@ -79,7 +76,7 @@ export function isTrialExpired(): boolean {
   return getTrialDaysLeft() <= 0 && getCurrentPlan() === "free";
 }
 
-// ── Invoice limits ─────────────────────────────────────────────────────────
+// ── Invoice limits — UNLIMITED for free ────────────────────────────────────
 
 export function getInvoiceCount(): number {
   return parseInt(localStorage.getItem(getMonthKey()) || "0", 10);
@@ -90,18 +87,17 @@ export function incrementInvoiceCount(): void {
 }
 
 export function getInvoiceLimit(): number {
-  if (isTrialActive()) return Infinity;
-  const plan = getCurrentPlan();
-  return plan === "free" ? 50 : Infinity;
+  // Unlimited invoices for ALL plans including free
+  return Infinity;
 }
 
 export function getRemainingInvoices(): number {
-  return Math.max(0, getInvoiceLimit() - getInvoiceCount());
+  return Infinity;
 }
 
 export function isLimitReached(): boolean {
-  if (isTrialActive()) return false;
-  return getCurrentPlan() === "free" && getInvoiceCount() >= 50;
+  // Never limit invoices — unlimited for everyone
+  return false;
 }
 
 // ── Feature gating ─────────────────────────────────────────────────────────
@@ -113,7 +109,16 @@ export function getTemplateAccess(): string[] {
 }
 
 export function canUseWhatsApp(): boolean {
-  return true; // WhatsApp sharing is free for all users
+  return true; // Free for all
+}
+
+// UPI QR and bank details — FREE for everyone (competitive advantage)
+export function canUseUpiQr(): boolean {
+  return true; // Free for all — beats Vyapar and myBillBook
+}
+
+export function canUseBankDetails(): boolean {
+  return true; // Free for all
 }
 
 export function canExportGSTR(): boolean {
@@ -136,14 +141,15 @@ export function canUseBulkOps(): boolean {
   return getCurrentPlan() === "business";
 }
 
+// Customer limit — unlimited for free to attract users
 export function getCustomerLimit(): number {
   const plan = getCurrentPlan();
-  return plan === "free" ? 50 : plan === "pro" ? 500 : Infinity;
+  return plan === "free" ? Infinity : Infinity; // All unlimited now
 }
 
+// Product limit — unlimited for free
 export function getProductLimit(): number {
-  const plan = getCurrentPlan();
-  return plan === "free" ? 50 : plan === "pro" ? 500 : Infinity;
+  return Infinity; // All unlimited
 }
 
 export function getTeamMemberLimit(): number {
@@ -159,7 +165,6 @@ export function getBusinessLimit(): number {
 
 // ── Plan helpers ──────────────────────────────────────────────────────────
 
-// True for pro, business, or active trial
 export function isPro(): boolean {
   return getCurrentPlan() !== "free" || isTrialActive();
 }
@@ -195,22 +200,18 @@ export function setTeamRole(role: string | null): void {
   window.dispatchEvent(new CustomEvent("billkar:plan-updated"));
 }
 
-/** Viewer: read-only — no create, edit, or delete */
 export function isViewer(): boolean {
   return getTeamRole() === "viewer";
 }
 
-/** Staff: can create invoices, customers, products, expenses but no settings/team/billing */
 export function isStaff(): boolean {
   return getTeamRole() === "staff";
 }
 
-/** Can the current user create/edit/delete data? (false for viewers) */
 export function canWrite(): boolean {
   return getTeamRole() !== "viewer";
 }
 
-/** Can the current user access business settings, billing, team tabs? */
 export function canManageBusiness(): boolean {
   const role = getTeamRole();
   return !role || role === "owner" || role === "admin";

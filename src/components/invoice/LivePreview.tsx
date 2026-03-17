@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { QRCodeSVG } from "qrcode.react";
 import type { InvoiceData } from "./types";
 import { calcItemTaxable, calcItemTax, calcItemTotal, isIntraState, formatCurrency, numberToWords } from "./utils";
-import { isPro } from "@/lib/planStore";
+import { isPro, canUseUpiQr } from "@/lib/planStore";
 
 interface Props {
   data: InvoiceData;
@@ -691,7 +691,7 @@ const ProfessionalTemplate = ({ data }: Props) => {
                 </p>
                 {data.upiId && <p className="text-gray-500">UPI: {data.upiId}</p>}
               </div>
-              {isPro() && data.upiId && totals.grandTotal > 0 && (
+              {canUseUpiQr() && data.upiId && totals.grandTotal > 0 && (
                 <div className="flex flex-col items-center gap-1 flex-shrink-0">
                   <p className="text-[9px] font-bold text-gray-500 uppercase tracking-wide">Scan to Pay</p>
                   <QRCodeSVG value={`upi://pay?pa=${data.upiId}&pn=${encodeURIComponent(data.businessName || "Business")}&am=${totals.grandTotal}&cu=INR&tn=Invoice-${data.invoiceNumber}`} size={72} />
@@ -728,7 +728,7 @@ const ProfessionalTemplate = ({ data }: Props) => {
 
 const FooterSection = ({ data, accentBorder, grandTotal }: { data: InvoiceData; accentBorder: string; grandTotal?: number }) => {
   const hasBank = data.bankName || data.accountNumber || data.ifsc;
-  const showQR = isPro() && !!data.upiId && !!grandTotal;
+  const showQR = canUseUpiQr() && !!data.upiId && !!grandTotal;
   const upiUrl = showQR
     ? `upi://pay?pa=${data.upiId}&pn=${encodeURIComponent(data.businessName || "Business")}&am=${grandTotal}&cu=INR&tn=Invoice-${data.invoiceNumber}`
     : "";
@@ -1182,14 +1182,14 @@ const templateMap: Record<string, React.FC<Props>> = {
 
 const LivePreview = ({ data }: Props) => {
   const Template = templateMap[data.template] || ModernTemplate;
-  const showUpiTip = isPro() && !data.upiId;
+  const showUpiTip = !data.upiId;
   return (
     <div>
       <Template data={data} />
       {showUpiTip && (
         <div className="mt-3 flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 text-xs text-amber-800">
           <span className="text-base leading-none mt-0.5">💳</span>
-          <span>Add your <strong>UPI ID</strong> in Settings → Business to show a scannable QR code on this invoice — customers can pay instantly by scanning it.</span>
+          <span>Add your <strong>UPI ID</strong> in Settings → Business to show a scannable QR code on this invoice — customers can pay instantly by scanning it. <strong>It's free!</strong></span>
         </div>
       )}
     </div>
