@@ -304,15 +304,9 @@ const DashboardSidebar = memo(({ collapsed, onToggle }: Props) => {
       <div className="border-t border-gray-200 p-3 flex-shrink-0">
         {isFree && !trial && !collapsed && (
           <div className="px-2 pb-2">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-[10px] font-medium text-muted-foreground">{invCount}/50 invoices</span>
-              <a href="/#pricing" className="text-[10px] font-semibold text-primary hover:underline">Upgrade →</a>
-            </div>
-            <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
-              <div
-                className={cn("h-full rounded-full transition-all", invCount > 45 ? "bg-destructive" : invCount >= 35 ? "bg-amber-500" : "bg-primary")}
-                style={{ width: `${Math.min((invCount / 50) * 100, 100)}%` }}
-              />
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-semibold text-emerald-600">✓ Unlimited invoices</span>
+              <a href="/#pricing" className="text-[10px] font-semibold text-indigo-500 hover:underline">Upgrade →</a>
             </div>
           </div>
         )}

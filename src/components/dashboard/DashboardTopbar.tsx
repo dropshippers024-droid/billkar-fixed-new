@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Search, Plus, Bell, Menu, LogOut, Settings, CreditCard, FileText, Users, Package, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "@/lib/authStore";
-import { getRemainingInvoices, isPro } from "@/lib/planStore";
+import { isPro, getCurrentPlan } from "@/lib/planStore";
 import { api } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -312,11 +312,9 @@ const DashboardTopbar = ({ onMobileMenuToggle }: Props) => {
           </Link>
         </div>
         {isPro() ? (
-          <span className="text-xs font-semibold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">Pro</span>
+          <span className="text-xs font-bold bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full">Pro ✦</span>
         ) : (
-          <span className={`text-xs font-medium ${getRemainingInvoices() < 10 ? "text-amber-600" : "text-muted-foreground"}`}>
-            {getRemainingInvoices()} left
-          </span>
+          <span className="text-xs font-semibold bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">Free</span>
         )}
 
         {/* Bell */}
