@@ -39,13 +39,9 @@ const Navbar = () => {
     }`}>
       <div className="max-w-6xl mx-auto flex items-center justify-between h-16 px-4">
 
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-            style={{ background: "linear-gradient(135deg, #4f46e5, #10b981)" }}>
-            <span className="text-white font-extrabold text-sm">B</span>
-          </div>
-          <span className={`text-xl font-extrabold tracking-tight ${isHero ? "text-white" : "text-gray-900"}`}>
+        {/* Logo — text only, no icon */}
+        <Link to="/" className="flex items-center">
+          <span className={`text-2xl font-extrabold tracking-tight ${isHero ? "text-white" : "text-gray-900"}`}>
             Bill<span className={isHero ? "text-yellow-300" : "text-gradient-primary"}>Kar</span>
           </span>
         </Link>
